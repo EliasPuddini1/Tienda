@@ -102,5 +102,8 @@ public class Busqueda {
                 System.out.println("-----------------------------------");
             }
         }
+        System.out.println("Presiona Enter para continuar...");
+        Scanner scanner = new Scanner(System.in);
+        scanner.nextLine();
     }
 }

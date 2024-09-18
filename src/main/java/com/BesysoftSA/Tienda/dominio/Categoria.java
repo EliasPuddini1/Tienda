@@ -13,4 +13,9 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
+
+    @Override
+    public String toString() {
+        return nombre;  // O cualquier otra representación que quieras mostrar
+    }
 }
