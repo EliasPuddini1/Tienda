@@ -8,12 +8,14 @@ import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import com.BesysoftSA.Tienda.repositorios.VendedorRepo;
 import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+@Service
 public class RegistroVenta {
 
     @Autowired
@@ -22,7 +24,7 @@ public class RegistroVenta {
     private VendedorRepo vendedorRepo;
     @Autowired
     private ProductoRepo productoRepo;
-    private GeneradorCodigo generadorCodigo;
+    private GeneradorCodigo generadorCodigo = new GeneradorCodigo();
 
     public void registrarVenta() {
         Scanner scanner = new Scanner(System.in);
@@ -46,6 +48,7 @@ public class RegistroVenta {
 
                 if (producto != null) {
                     productos.add(producto);
+
                 } else {
                     System.out.println("Producto con código " + codigoProducto + " no encontrado.");
                 }

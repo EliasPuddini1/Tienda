@@ -4,10 +4,12 @@ import com.BesysoftSA.Tienda.Servicios.buscador.Filtro;
 import com.BesysoftSA.Tienda.dto.ProductoDTO;
 import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class FiltroCodigo implements Filtro {
     @Autowired
     ProductoRepo productoRepo;

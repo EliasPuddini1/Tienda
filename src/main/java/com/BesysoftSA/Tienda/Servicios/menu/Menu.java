@@ -1,6 +1,7 @@
 package com.BesysoftSA.Tienda.Servicios.menu;
 
 import com.BesysoftSA.Tienda.Servicios.menu.funcionalidades.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -8,10 +9,15 @@ import java.util.Scanner;
 @Component
 public class Menu {
 
+    @Autowired
     private Busqueda busqueda;
+    @Autowired
     private Comisiones comisiones;
+    @Autowired
     private RegistroVendedor registroVendedor;
+    @Autowired
     private RegistroProducto registroProducto;
+    @Autowired
     private RegistroVenta registroVenta;
 
     public void runMenu() {

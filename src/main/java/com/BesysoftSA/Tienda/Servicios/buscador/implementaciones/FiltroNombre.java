@@ -5,10 +5,12 @@ import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.dto.ProductoDTO;
 import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class FiltroNombre implements Filtro {
 
     @Autowired

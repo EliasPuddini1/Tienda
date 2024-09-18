@@ -5,7 +5,9 @@ import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import com.BesysoftSA.Tienda.repositorios.VendedorRepo;
 import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GeneradorCodigo {
 
     @Autowired

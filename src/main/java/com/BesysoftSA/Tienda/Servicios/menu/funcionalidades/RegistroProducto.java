@@ -6,16 +6,19 @@ import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.repositorios.CategoriaRepo;
 import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@Service
 public class RegistroProducto {
 
     @Autowired
     private ProductoRepo productoRepo;
     @Autowired
     private CategoriaRepo categoriaRepo;
+    @Autowired
     private GeneradorCodigo generadorCodigo;
 
     public void registrarProducto() {
@@ -49,6 +52,7 @@ public class RegistroProducto {
                 if (categoria == null){
                     categoria = new Categoria();
                     categoria.setNombre(categoriaSTR);
+                    categoriaRepo.save(categoria);
                 }
 
             } while (categoriaSTR.isEmpty());

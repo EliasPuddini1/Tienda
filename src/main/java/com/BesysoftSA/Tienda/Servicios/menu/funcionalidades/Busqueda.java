@@ -7,20 +7,21 @@ import com.BesysoftSA.Tienda.Servicios.buscador.implementaciones.FiltroNombre;
 import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.dto.ProductoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Scanner;
 
+@Service
 public class Busqueda {
-    @Autowired
-    private FiltroContexto filtroContexto;
+
+    private FiltroContexto filtroContexto = new FiltroContexto();
     @Autowired
     private FiltroCategoria filtroCategoria;
     @Autowired
     private FiltroNombre filtroNombre;
     @Autowired
     private FiltroCodigo filtroCodigo;
-    private Excepcion excepcion;
 
     public void buscarProductoPorCategoria() {
         Scanner scanner = new Scanner(System.in);

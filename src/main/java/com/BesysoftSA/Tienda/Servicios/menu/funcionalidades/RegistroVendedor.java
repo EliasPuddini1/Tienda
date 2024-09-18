@@ -4,14 +4,17 @@ import com.BesysoftSA.Tienda.Servicios.generarCodigo.GeneradorCodigo;
 import com.BesysoftSA.Tienda.dominio.Vendedor;
 import com.BesysoftSA.Tienda.repositorios.VendedorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+@Service
 public class RegistroVendedor {
 
     @Autowired
     private VendedorRepo vendedorRepo;
+    @Autowired
     private GeneradorCodigo generadorCodigo;
 
     public void registrarVendedor() {
