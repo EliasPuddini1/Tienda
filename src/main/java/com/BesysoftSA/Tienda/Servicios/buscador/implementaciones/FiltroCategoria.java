@@ -1,7 +1,7 @@
 package com.BesysoftSA.Tienda.Servicios.buscador.implementaciones;
 
 import com.BesysoftSA.Tienda.Servicios.buscador.Filtro;
-import com.BesysoftSA.Tienda.dominio.Producto;
+import com.BesysoftSA.Tienda.dto.ProductoDTO;
 import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,9 +13,12 @@ public class FiltroCategoria implements Filtro {
     @Autowired
     ProductoRepo productoRepo;
 
-    public List<Producto> obtenerProductos(String categoria){
-        return productoRepo.findAll().stream().filter(producto -> producto.getCategoria() //obtengo categoria
-                        .getNombre().contains(categoria)) //filtro por su nombre
-                .collect(Collectors.toList()); //lo guardo en lista
+    public List<ProductoDTO> obtenerProductos(String categoria) {
+        return productoRepo.findAll().stream()
+                .filter(producto -> producto.getCategoria() // obtengo la categoría del producto
+                        .getNombre().equalsIgnoreCase(categoria)) // filtro por el nombre de la categoría (ignorando mayúsculas/minúsculas)
+                .map(ProductoDTO::new) // convertir los productos a DTO
+                .collect(Collectors.toList()); // los recolecto en una lista
     }
+
 }

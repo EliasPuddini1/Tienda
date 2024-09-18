@@ -1,6 +1,6 @@
 package com.BesysoftSA.Tienda.dominio;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 
@@ -11,9 +11,14 @@ import java.util.List;
 @Entity
 public class Venta {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String codigo;
     private LocalDateTime fecha;
+    @OneToMany
     private List<Producto> productos;
+    @OneToOne
     private Vendedor vendedor;
     private double total;
 
