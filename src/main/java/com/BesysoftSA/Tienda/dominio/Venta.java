@@ -3,6 +3,7 @@ package com.BesysoftSA.Tienda.dominio;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,7 @@ public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     private String codigo;
     private LocalDateTime fecha;
     @OneToMany

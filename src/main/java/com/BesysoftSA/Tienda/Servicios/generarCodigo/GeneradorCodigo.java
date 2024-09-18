@@ -7,6 +7,8 @@ import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class GeneradorCodigo {
 
@@ -18,48 +20,72 @@ public class GeneradorCodigo {
     @Autowired
     VentaRepo ventaRepo;
 
-    public String generarCodigoVendedor() {
-        // Obtener el último producto registrado
-        Producto ultimoProducto = vendedorRepo.findTopByOrderByIdDesc(); // Método que obtiene el último producto según su ID
-        if (ultimoProducto != null) {
-            // Extraer el número del último código y aumentarlo en 1
-            String ultimoCodigo = ultimoProducto.getCodigo();
-            int numero = Integer.parseInt(ultimoCodigo.replaceAll("[^0-9]", "")); // Extraer el número del código
-            numero++; // Incrementar el número
-            return "P" + String.format("%05d", numero); // Generar el nuevo código (ejemplo: P00001)
-        } else {
-            // Si no hay productos, comenzar con el primer código
-            return "V00001";
+    public String generarCodigoProducto() {
+        List<String> codigos = productoRepo.findTopCodigo();  // Obtén la lista de códigos más altos
+
+        if (codigos.isEmpty()) {
+            return "PROD001";  // Código inicial si no hay productos
+        }
+
+        String ultimoCodigo = codigos.get(0);
+        int numero = Integer.parseInt(ultimoCodigo.substring(4));  // Suponiendo que el código tiene el formato "PROD" + número
+
+        // Generar códigos hasta encontrar uno único
+        while (true) {
+            String codigo = "PROD" + String.format("%03d", numero + 1);  // Genera el siguiente código
+
+            // Verificar si el código ya existe en la base de datos
+            boolean codigoExiste = !productoRepo.findByCodigo(codigo).isEmpty();
+
+            if (!codigoExiste) {
+                return codigo;  // Retorna el primer código único encontrado
+            } else {
+                numero++;  // Incrementa el número para probar el siguiente código
+            }
         }
     }
 
-    public String generarCodigoProducto() {
-        // Obtener el último producto registrado
-        Producto ultimoProducto = productoRepo.findTopByOrderByIdDesc(); // Método que obtiene el último producto según su ID
-        if (ultimoProducto != null) {
-            // Extraer el número del último código y aumentarlo en 1
-            String ultimoCodigo = ultimoProducto.getCodigo();
-            int numero = Integer.parseInt(ultimoCodigo.replaceAll("[^0-9]", "")); // Extraer el número del código
-            numero++; // Incrementar el número
-            return "P" + String.format("%05d", numero); // Generar el nuevo código (ejemplo: P00001)
-        } else {
-            // Si no hay productos, comenzar con el primer código
-            return "P00001";
+    public String generarCodigoVendedor() {
+        List<String> codigos = vendedorRepo.findTopCodigo();  // Asegúrate de que este método en VendedorRepo devuelva la lista de códigos
+
+        if (codigos.isEmpty()) {
+            return "VEN001";  // Código inicial si no hay vendedores
         }
+
+        String ultimoCodigo = codigos.get(0);
+        int numero = Integer.parseInt(ultimoCodigo.substring(3));  // Suponiendo que "VEN" + número
+
+        while(true){
+            String codigo = "VEN" + String.format("%03d", numero + 1);  // Genera el siguiente código
+            boolean codigoExiste = !vendedorRepo.findByCodigo(codigo).isEmpty();
+
+            if (!codigoExiste) {
+                return codigo;  // Retorna el primer código único encontrado
+            } else {
+                numero++;  // Incrementa el número para probar el siguiente código
+            }
+        }
+
     }
 
     public String generarCodigoVenta() {
-        // Obtener el último producto registrado
-        Producto ultimoProducto = ventaRepo.findTopByOrderByIdDesc(); // Método que obtiene el último producto según su ID
-        if (ultimoProducto != null) {
-            // Extraer el número del último código y aumentarlo en 1
-            String ultimoCodigo = ultimoProducto.getCodigo();
-            int numero = Integer.parseInt(ultimoCodigo.replaceAll("[^0-9]", "")); // Extraer el número del código
-            numero++; // Incrementar el número
-            return "P" + String.format("%05d", numero); // Generar el nuevo código (ejemplo: P00001)
-        } else {
-            // Si no hay productos, comenzar con el primer código
-            return "V00001";
+        List<String> codigos = ventaRepo.findTopCodigo(); // Asegúrate de que este método esté en el repositorio
+        if (codigos.isEmpty()) {
+            return "VENT001";  // Código inicial si no hay ventas
+        }
+        String ultimoCodigo = codigos.get(0);
+        int numero = Integer.parseInt(ultimoCodigo.substring(3));
+
+        while(true){
+            String codigo = "VENT" + String.format("%03d", Integer.parseInt(ultimoCodigo.substring(4)) + 1);
+            boolean codigoExiste = !ventaRepo.findByCodigo(codigo).isEmpty();
+
+            if (!codigoExiste) {
+                return codigo;  // Retorna el primer código único encontrado
+            } else {
+                numero++;  // Incrementa el número para probar el siguiente código
+            }
+
         }
     }
 }
