@@ -47,7 +47,7 @@ public class Menu {
                     comisiones.calcularComisiones();
                     break;
                 case 5:
-                    busqueda.buscarProductoPorCategoria();
+                    busqueda.buscarProducto();
                     break;
                 case 6:
                     System.out.println("Saliendo del programa...");

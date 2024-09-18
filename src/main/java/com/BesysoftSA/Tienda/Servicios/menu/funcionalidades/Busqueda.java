@@ -4,7 +4,6 @@ import com.BesysoftSA.Tienda.Servicios.buscador.FiltroContexto;
 import com.BesysoftSA.Tienda.Servicios.buscador.implementaciones.FiltroCategoria;
 import com.BesysoftSA.Tienda.Servicios.buscador.implementaciones.FiltroCodigo;
 import com.BesysoftSA.Tienda.Servicios.buscador.implementaciones.FiltroNombre;
-import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.dto.ProductoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +22,7 @@ public class Busqueda {
     @Autowired
     private FiltroCodigo filtroCodigo;
 
-    public void buscarProductoPorCategoria() {
+    public void buscarProducto() {
         Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("Ingrese la opción de búsqueda.");
