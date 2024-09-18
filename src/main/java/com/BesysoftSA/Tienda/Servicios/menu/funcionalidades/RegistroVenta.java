@@ -8,6 +8,7 @@ import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import com.BesysoftSA.Tienda.repositorios.VendedorRepo;
 import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,8 @@ public class RegistroVenta {
     private VendedorRepo vendedorRepo;
     @Autowired
     private ProductoRepo productoRepo;
-    private GeneradorCodigo generadorCodigo = new GeneradorCodigo();
+    @Autowired
+    private GeneradorCodigo generadorCodigo;
 
     public void registrarVenta() {
         Scanner scanner = new Scanner(System.in);
@@ -47,6 +49,7 @@ public class RegistroVenta {
                         .orElse(null);
 
                 if (producto != null) {
+                    System.out.println("Producto encontrado: " + producto.getNombre() + " - Precio: " + producto.getPrecio());
                     productos.add(producto);
 
                 } else {
@@ -79,7 +82,7 @@ public class RegistroVenta {
             double total = productos.stream().mapToDouble(Producto::getPrecio).sum();
 
             // Generar el código de venta automáticamente basado en el último código de la base de datos
-            String codigoVenta = generadorCodigo.generarCodigoVenta();
+            String codigoVenta = generadorCodigo.generarCodigoVenta(ventaRepo);
 
             // Crear un nuevo objeto Venta con los datos validados
             Venta nuevaVenta = new Venta();
@@ -89,10 +92,29 @@ public class RegistroVenta {
             nuevaVenta.setVendedor(vendedor);
             nuevaVenta.setTotal(total);
 
+            boolean error=false;
             // Guardar la venta en la base de datos usando ventaRepo
-            ventaRepo.save(nuevaVenta);
+            try {
+                ventaRepo.save(nuevaVenta);
+            } catch (DataIntegrityViolationException e) {
+                // Manejar la excepción, tal vez con un mensaje de error o registro
+                System.out.println("Error: no pudo registrarse la venta.");
+                error = true;
+            }
+            if (!error) {
+                // Mostrar detalles de la venta
+                System.out.println("Venta registrada con éxito:");
+                System.out.println("Código de venta: " + nuevaVenta.getCodigo());
+                System.out.println("Fecha: " + nuevaVenta.getFecha());
+                System.out.println("Vendedor: " + vendedor.getNombre() + " " + vendedor.getApellido());
+                System.out.println("Total: " + nuevaVenta.getTotal());
+                System.out.println("Productos:");
 
-            System.out.println("Venta registrada con éxito: " + nuevaVenta.getCodigo() + " (Total: " + total + ")");
+                // Mostrar detalles de los productos en la venta
+                for (Producto p : nuevaVenta.getProductos()) {
+                    System.out.println(" - " + p.getNombre() + " - Precio: " + p.getPrecio());
+                }
+            }
 
             System.out.print("¿Desea registrar otra venta? (Si/No): ");
             String continuar = scanner.nextLine().trim();

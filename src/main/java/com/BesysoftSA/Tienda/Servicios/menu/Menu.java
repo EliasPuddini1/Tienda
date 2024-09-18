@@ -24,11 +24,11 @@ public class Menu {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("1. Registrar producto");
-            System.out.println("2. Registrar vendedor");
-            System.out.println("3. Registrar venta");
-            System.out.println("4. Calcular comisiones");
-            System.out.println("5. Buscar producto por categoría");
+            System.out.println("1. Registrar producto. ");
+            System.out.println("2. Registrar vendedor. ");
+            System.out.println("3. Registrar venta. ");
+            System.out.println("4. Calcular comisiones. ");
+            System.out.println("5. Buscar producto. ");
             System.out.println("6. Salir");
 
             int opcion = scanner.nextInt();
@@ -41,7 +41,7 @@ public class Menu {
                     registroVendedor.registrarVendedor();
                     break;
                 case 3:
-                    registroVenta.registrarVenta();
+                    registroVenta.registrarVenta();//TODO correjir generador de codigo que genera el error al parecer
                     break;
                 case 4:
                     comisiones.calcularComisiones();

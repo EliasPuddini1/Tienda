@@ -56,8 +56,23 @@ public class RegistroVendedor {
                 }
             } while (dni <= 0);
 
+            double sueldo = -1;
+            do {
+                try {
+                    System.out.print("Ingrese el sueldo del vendedor: ");
+                    sueldo = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar el buffer
+                    if (sueldo <= 0) {
+                        System.out.println("El DNI debe ser un valor positivo.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Ingrese un valor numérico válido para el DNI.");
+                    scanner.nextLine(); // Limpiar el buffer
+                }
+            } while (sueldo <= 0);
+
             // Generar el código de vendedor automáticamente basado en el último código de la base de datos
-            String codigo = generadorCodigo.generarCodigoVendedor();
+            String codigo = generadorCodigo.generarCodigoVendedor(vendedorRepo);
 
             // Crear un nuevo objeto Vendedor con los datos validados
             Vendedor nuevoVendedor = new Vendedor();
@@ -65,6 +80,7 @@ public class RegistroVendedor {
             nuevoVendedor.setApellido(apellido);
             nuevoVendedor.setDni(dni);
             nuevoVendedor.setCodigo(codigo);
+            nuevoVendedor.setSueldo(sueldo);
 
             // Guardar el vendedor en la base de datos usando vendedorRepo
             vendedorRepo.save(nuevoVendedor);

@@ -10,7 +10,9 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface VentaRepo extends JpaRepository<Venta,Long> {
-    @Query("SELECT v.codigo FROM Venta v ORDER BY v.id DESC")
+    @Query("SELECT v.codigo FROM Venta v ORDER BY v.codigo DESC")
     List<String> findTopCodigo();
     List<Venta> findByCodigo(String codigo);
+
+    boolean existsByCodigo(String codigo);
 }

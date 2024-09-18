@@ -6,6 +6,7 @@ import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.repositorios.CategoriaRepo;
 import com.BesysoftSA.Tienda.repositorios.ProductoRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.InputMismatchException;
@@ -73,7 +74,7 @@ public class RegistroProducto {
             } while (precio < 0);
 
             // Generar el código de producto automáticamente basado en el último código de la base de datos
-            String codigo = generadorCodigo.generarCodigoProducto();
+            String codigo = generadorCodigo.generarCodigoProducto(productoRepo);
 
             // Crear un nuevo objeto Producto con los datos validados
             Producto nuevoProducto = new Producto();
@@ -83,7 +84,12 @@ public class RegistroProducto {
             nuevoProducto.setPrecio(precio);
 
             // Guardar el producto en la base de datos usando productoRepo
-            productoRepo.save(nuevoProducto);
+            try {
+                productoRepo.save(nuevoProducto);
+            } catch (DataIntegrityViolationException e) {
+                // Manejar la excepción, por ejemplo, mostrar un mensaje al usuario
+                System.out.println("Error: El código del producto ya existe.");
+            }
 
             System.out.println("Producto registrado con éxito: " + nuevoProducto.getNombre() + " (Código: " + codigo + ")");
 

@@ -7,20 +7,14 @@ import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class GeneradorCodigo {
 
-    @Autowired
-    ProductoRepo productoRepo;
-    @Autowired
-    VendedorRepo vendedorRepo;
-
-    @Autowired
-    VentaRepo ventaRepo;
-
-    public String generarCodigoProducto() {
+    public String generarCodigoProducto(ProductoRepo productoRepo) {
         List<String> codigos = productoRepo.findTopCodigo();  // Obtén la lista de códigos más altos
 
         if (codigos.isEmpty()) {
@@ -45,7 +39,7 @@ public class GeneradorCodigo {
         }
     }
 
-    public String generarCodigoVendedor() {
+    public String generarCodigoVendedor(VendedorRepo vendedorRepo) {
         List<String> codigos = vendedorRepo.findTopCodigo();  // Asegúrate de que este método en VendedorRepo devuelva la lista de códigos
 
         if (codigos.isEmpty()) {
@@ -55,7 +49,7 @@ public class GeneradorCodigo {
         String ultimoCodigo = codigos.get(0);
         int numero = Integer.parseInt(ultimoCodigo.substring(3));  // Suponiendo que "VEN" + número
 
-        while(true){
+        while (true) {
             String codigo = "VEN" + String.format("%03d", numero + 1);  // Genera el siguiente código
             boolean codigoExiste = !vendedorRepo.findByCodigo(codigo).isEmpty();
 
@@ -65,27 +59,31 @@ public class GeneradorCodigo {
                 numero++;  // Incrementa el número para probar el siguiente código
             }
         }
-
     }
 
-    public String generarCodigoVenta() {
-        List<String> codigos = ventaRepo.findTopCodigo(); // Asegúrate de que este método esté en el repositorio
+    public String generarCodigoVenta(VentaRepo ventaRepo) {
+        // Obtén el último código registrado en la base de datos
+        List<String> codigos = ventaRepo.findTopCodigo();  // Asegúrate de que este método esté en el repositorio
+
+        String prefix = "VENT";
+        int numero;
+
         if (codigos.isEmpty()) {
-            return "VENT001";  // Código inicial si no hay ventas
+            numero = 0;  // Si no hay códigos, empieza desde 0
+        } else {
+            String ultimoCodigo = codigos.get(0);
+            numero = Integer.parseInt(ultimoCodigo.substring(prefix.length()));  // Extrae el número
         }
-        String ultimoCodigo = codigos.get(0);
-        int numero = Integer.parseInt(ultimoCodigo.substring(3));
 
-        while(true){
-            String codigo = "VENT" + String.format("%03d", Integer.parseInt(ultimoCodigo.substring(4)) + 1);
-            boolean codigoExiste = !ventaRepo.findByCodigo(codigo).isEmpty();
+        // Genera el siguiente código basado en el último código
+        String codigoVenta;
+        do {
+            numero++;
+            codigoVenta = prefix + String.format("%03d", numero);  // Genera el siguiente código
+        } while (ventaRepo.existsByCodigo(codigoVenta));  // Verifica si el código ya existe en la base de datos
 
-            if (!codigoExiste) {
-                return codigo;  // Retorna el primer código único encontrado
-            } else {
-                numero++;  // Incrementa el número para probar el siguiente código
-            }
-
-        }
+        return codigoVenta;
     }
+
+
 }

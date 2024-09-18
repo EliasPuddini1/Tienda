@@ -10,7 +10,7 @@ import java.util.List;
 
 @RepositoryRestResource
 public interface ProductoRepo extends JpaRepository<Producto,Long> {
-    @Query("SELECT p.codigo FROM Producto p ORDER BY p.id DESC")
+    @Query("SELECT p.codigo FROM Producto p ORDER BY p.codigo DESC")
     List<String> findTopCodigo();
 
     List<Producto> findByCodigo(String codigo);

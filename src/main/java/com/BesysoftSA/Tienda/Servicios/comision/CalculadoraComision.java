@@ -4,12 +4,14 @@ import com.BesysoftSA.Tienda.dominio.CoeficientesReconocimiento;
 import com.BesysoftSA.Tienda.dominio.Producto;
 import com.BesysoftSA.Tienda.dominio.Vendedor;
 import com.BesysoftSA.Tienda.dominio.Venta;
+import com.BesysoftSA.Tienda.repositorios.CoeficientesReconocimientoRepo;
 import com.BesysoftSA.Tienda.repositorios.VendedorRepo;
 import com.BesysoftSA.Tienda.repositorios.VentaRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,17 @@ public class CalculadoraComision {
     private CoeficientesReconocimiento coeficientes;
     @Autowired
     private VentaRepo ventaRepo;
+    @Autowired
+    private CoeficientesReconocimientoRepo coeficientesReconocimientoRepo;
 
     public double calcularComision(Vendedor vendedor){ //suposicion: las comisiones se calculan de forma mensual
+
+        try{
+            coeficientes = coeficientesReconocimientoRepo.findAll().get(0);
+        }catch (InputMismatchException e) {
+            System.out.println("No hay coeficientes cargados.");
+        }
+
 
         double id = vendedor.getId();
         List<Venta> ventas = ventaRepo.findAll().stream().filter(

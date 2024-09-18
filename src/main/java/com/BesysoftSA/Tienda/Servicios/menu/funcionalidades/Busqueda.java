@@ -97,7 +97,7 @@ public class Busqueda {
                 System.out.println("ID: " + producto.getId());
                 System.out.println("Nombre: " + producto.getNombre());
                 System.out.println("Código: " + producto.getCodigo());
-                System.out.println("Categoría: " + producto.getCategoria());
+                System.out.println("Categoría: " + producto.getCategoria().getNombre());
                 System.out.println("Precio: " + producto.getPrecio());
                 System.out.println("-----------------------------------");
             }

@@ -11,7 +11,7 @@ import java.util.List;
 @RepositoryRestResource
 public interface VendedorRepo extends JpaRepository<Vendedor,Long> {
 
-    @Query("SELECT v.codigo FROM Vendedor v ORDER BY v.id DESC")
+    @Query("SELECT v.codigo FROM Vendedor v ORDER BY v.codigo DESC")
     List<String> findTopCodigo();
     public default Vendedor findBydni(double dni) {
         return this.findAll().stream().filter(vendedor -> vendedor.getDni() == dni).findFirst().orElse(null);

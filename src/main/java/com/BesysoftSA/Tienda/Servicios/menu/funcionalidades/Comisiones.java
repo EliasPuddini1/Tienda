@@ -21,18 +21,26 @@ public class Comisiones {
     public void calcularComisiones() {
 
         Scanner scanner = new Scanner(System.in);
+        String input;
 
         do {
             System.out.println("Ingrese el dni del vendedor. ");
             double dni = scanner.nextDouble();
 
-            Vendedor vendedor = vendedorRepo.findBydni(dni);
+            double comision;
+            Vendedor vendedor;
 
-            double comision = calculadoraComision.calcularComision(vendedor);
+            vendedor = vendedorRepo.findBydni(dni);
 
-            System.out.println("Comision = " + comision);
-            System.out.println("Calcular la comision de otro vendedor? 1.Si 2.No");
+            if(vendedor != null){
+                comision = calculadoraComision.calcularComision(vendedor);
+                System.out.println("Comision = " + comision);
+            }else{
+                System.out.println("No se ha encontrado al vendedor. Intente de nuevo");
+            }
 
-        } while (scanner.nextInt() ==1);
+            System.out.println("Calcular la comision de otro vendedor? (Si/No)");
+            input = scanner.next();
+        } while (!input.equals("No"));
     }
 }

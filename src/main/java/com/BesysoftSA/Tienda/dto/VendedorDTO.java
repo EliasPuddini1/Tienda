@@ -11,6 +11,7 @@ public class VendedorDTO {
     private String nombre;
     private String apellido;
     private double dni;
+    private double sueldo;
 
     public VendedorDTO(Vendedor vendedor){
         this.id = vendedor.getId();
@@ -18,5 +19,6 @@ public class VendedorDTO {
         this.nombre = vendedor.getNombre();
         this.apellido = vendedor.getApellido();
         this.dni = vendedor.getDni();
+        this.sueldo = vendedor.getSueldo();
     }
 }
